@@ -232,20 +232,20 @@ export default function MainMenu() {
                   className="group relative overflow-hidden rounded-2xl p-5 text-left transition-all duration-300 hover:scale-105 active:scale-95"
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
-                  {/* 背景渐变 */}
-                  <div className={`absolute inset-0 bg-gradient-to-br ${diff.color} opacity-80 group-hover:opacity-100 transition-opacity duration-300`} />
+                  {/* 背景渐变 - 修复: 装饰层全部加 pointer-events-none，避免 hover 状态抖动 */}
+                  <div className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${diff.color} opacity-80 group-hover:opacity-100 transition-opacity duration-300`} />
                   
                   {/* 光泽效果 */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent opacity-60" />
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent opacity-60" />
                   
                   {/* 外发光 */}
-                  <div className={`absolute -inset-1 rounded-2xl bg-gradient-to-br ${diff.color} blur-lg opacity-0 group-hover:opacity-60 transition-opacity duration-300`} />
+                  <div className={`pointer-events-none absolute -inset-1 rounded-2xl bg-gradient-to-br ${diff.color} blur-lg opacity-0 group-hover:opacity-60 transition-opacity duration-300`} />
 
                   {/* 边框 */}
-                  <div className="absolute inset-0 rounded-2xl border-2 border-white/30" />
+                  <div className="pointer-events-none absolute inset-0 rounded-2xl border-2 border-white/30" />
 
                   {/* 内容 */}
-                  <div className="relative z-10">
+                  <div className="pointer-events-none relative z-10">
                     <div className="text-4xl mb-2">{diff.icon}</div>
                     <h3 className="text-xl font-bold text-white mb-1" style={{ fontFamily: "'Cinzel Decorative', serif" }}>
                       {diff.name}
@@ -271,20 +271,20 @@ export default function MainMenu() {
                   onClick={handleContinue}
                   className="group relative w-full overflow-hidden rounded-2xl p-4 text-left transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
                 >
-                  {/* 背景渐变 */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 opacity-90 group-hover:opacity-100 transition-opacity duration-300" />
+                  {/* 背景渐变 - 修复: 装饰层全部加 pointer-events-none，避免遮罩闪烁与点击失效 */}
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 opacity-90 group-hover:opacity-100 transition-opacity duration-300" />
                   
                   {/* 光泽效果 */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent opacity-60" />
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent opacity-60" />
                   
                   {/* 外发光 */}
-                  <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 blur-lg opacity-0 group-hover:opacity-60 transition-opacity duration-300" />
+                  <div className="pointer-events-none absolute -inset-1 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 blur-lg opacity-0 group-hover:opacity-60 transition-opacity duration-300" />
 
                   {/* 边框 */}
-                  <div className="absolute inset-0 rounded-2xl border-2 border-white/40" />
+                  <div className="pointer-events-none absolute inset-0 rounded-2xl border-2 border-white/40" />
 
                   {/* 内容 */}
-                  <div className="relative z-10 flex items-center gap-4">
+                  <div className="pointer-events-none relative z-10 flex items-center gap-4">
                     <div className="text-4xl">💾</div>
                     <div className="flex-1">
                       <h3 className="text-xl font-bold text-white" style={{ fontFamily: "'Cinzel Decorative', serif" }}>
@@ -316,20 +316,22 @@ export default function MainMenu() {
                   className="group relative overflow-hidden rounded-2xl p-5 text-left transition-all duration-300 hover:scale-105 active:scale-95"
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
-                  {/* 背景渐变 */}
-                  <div className={`absolute inset-0 bg-gradient-to-br ${mode.color} opacity-80 group-hover:opacity-100 transition-opacity duration-300`} />
+                  {/* 背景渐变 - 修复: 添加 pointer-events-none，避免装饰层拦截鼠标
+                      并与 hover:scale-105 配合时引发 hover 状态抖动（透明遮罩闪烁） */}
+                  <div className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${mode.color} opacity-80 group-hover:opacity-100 transition-opacity duration-300`} />
                   
-                  {/* 光泽效果 */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent opacity-60" />
+                  {/* 光泽效果 - 修复: pointer-events-none 让点击穿透到 button */}
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent opacity-60" />
                   
-                  {/* 外发光 */}
-                  <div className={`absolute -inset-1 rounded-2xl bg-gradient-to-br ${mode.color} blur-lg opacity-0 group-hover:opacity-60 transition-opacity duration-300`} />
+                  {/* 外发光 - 修复: -inset-1 会扩大命中区域，必须 pointer-events-none，
+                      否则相邻按钮的外发光区域互相重叠，导致 hover 反复切换并出现遮罩闪烁 */}
+                  <div className={`pointer-events-none absolute -inset-1 rounded-2xl bg-gradient-to-br ${mode.color} blur-lg opacity-0 group-hover:opacity-60 transition-opacity duration-300`} />
 
-                  {/* 边框 */}
-                  <div className="absolute inset-0 rounded-2xl border-2 border-white/30" />
+                  {/* 边框 - 修复: pointer-events-none 防止边框层挡住点击事件 */}
+                  <div className="pointer-events-none absolute inset-0 rounded-2xl border-2 border-white/30" />
 
-                  {/* 内容 */}
-                  <div className="relative z-10">
+                  {/* 内容 - 修复: 文字层也禁用指针事件，让事件统一由 button 接收，避免 hover 抖动 */}
+                  <div className="pointer-events-none relative z-10">
                     <div className="text-4xl mb-2">{mode.icon}</div>
                     <h3 className="text-xl font-bold text-white mb-1" style={{ fontFamily: "'Cinzel Decorative', serif" }}>
                       {mode.name}
