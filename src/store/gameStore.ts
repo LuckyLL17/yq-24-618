@@ -350,6 +350,7 @@ export const useGameStore = create<GameState & GameActions & CosmeticsState & Da
   saveGame: () => {
     const state = get();
     const { battleStore } = getStores();
+    const { playerStore } = getStores();
     
     savePermanentData({
       elementEssence: battleStore.elementEssence,
@@ -360,12 +361,15 @@ export const useGameStore = create<GameState & GameActions & CosmeticsState & Da
     });
 
     if (battleStore.phase === 'battle' && useEnemyStore.getState().enemy) {
+      // 修复: 保存双人模式状态 - player2、当前回合玩家、组合技冷却
       saveBattleData({
         phase: battleStore.phase,
         mode: battleStore.mode,
         difficulty: battleStore.difficulty,
         turn: battleStore.turn,
-        player: usePlayerStore.getState().player,
+        player: playerStore.player,
+        player2: playerStore.player2,
+        currentDuoPlayer: playerStore.currentDuoPlayer,
         enemy: useEnemyStore.getState().enemy,
         wave: battleStore.wave,
         level: battleStore.level,
@@ -373,6 +377,7 @@ export const useGameStore = create<GameState & GameActions & CosmeticsState & Da
         score: battleStore.score,
         streak: battleStore.streak,
         comboHistory: battleStore.comboHistory,
+        comboCooldowns: playerStore.player.comboCooldowns,
       });
     }
   },
@@ -390,6 +395,13 @@ export const useGameStore = create<GameState & GameActions & CosmeticsState & Da
       ...battleData.player,
       comboLevels,
     });
+    // 修复: 恢复双人模式状态 - player2、当前回合玩家
+    if (battleData.player2) {
+      playerStore.setPlayer2(battleData.player2);
+    }
+    if (battleData.currentDuoPlayer) {
+      playerStore.setCurrentDuoPlayer(battleData.currentDuoPlayer);
+    }
     enemyStore.setEnemy(battleData.enemy);
 
     useBattleStore.setState({
@@ -404,6 +416,11 @@ export const useGameStore = create<GameState & GameActions & CosmeticsState & Da
       streak: battleData.streak,
       comboHistory: battleData.comboHistory,
     });
+
+    // 修复: 恢复组合技冷却
+    if (battleData.comboCooldowns) {
+      playerStore.setComboCooldowns(battleData.comboCooldowns);
+    }
 
     useUIStore.setState({
       isAnimating: false,

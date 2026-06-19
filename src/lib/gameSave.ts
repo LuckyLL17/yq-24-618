@@ -30,6 +30,10 @@ export interface BattleSaveData {
   streak: number;
   comboHistory: GameState['comboHistory'];
   savedAt: number;
+  // 修复: 添加双人模式相关字段 - player2、当前回合玩家、组合技冷却
+  player2?: Player | null;
+  currentDuoPlayer?: 1 | 2;
+  comboCooldowns?: { comboId: string; remaining: number }[];
 }
 
 const DEFAULT_AVATARS = ['🗡️', '🛡️', '🔮', '⚔️', '🏹', '🧙', '🦸', '🦹', '👸', '🤴', '👾', '🤖'];

@@ -32,7 +32,7 @@ export default function GameOverScreen({ type }: GameOverScreenProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center animate-fade-in">
-      {/* 暗化背景 - 立即显示，避免白屏 */}
+      {/* 修复: 弹框定位问题 - 暗化背景 - 立即显示，避免白屏 */}
       <div className="absolute inset-0 bg-slate-950" />
       <div className="absolute inset-0 bg-black/60 backdrop-blur-md" />
 
@@ -90,7 +90,7 @@ export default function GameOverScreen({ type }: GameOverScreenProps) {
         </div>
       )}
 
-      {/* 主内容 */}
+      {/* 修复: 主内容 - 使用flex居中，配合改进后的zoom-in动画(使用both填充模式从中心缩放) */}
       <div className="relative z-10 text-center animate-zoom-in">
         {/* 外发光 */}
         <div
@@ -212,7 +212,7 @@ export default function GameOverScreen({ type }: GameOverScreenProps) {
           <button
             onClick={handleRestart}
             className={cn(
-              'group relative px-8 py-4 rounded-xl font-bold text-lg text-white transition-all duration-300 hover:scale-105 active:scale-95 overflow-hidden',
+              'group relative isolate px-8 py-4 rounded-xl font-bold text-lg text-white transition-all duration-300 hover:scale-105 active:scale-95 overflow-hidden transform-gpu',
               isVictory
                 ? 'bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 shadow-lg shadow-amber-500/30'
                 : 'bg-gradient-to-r from-red-500 via-rose-500 to-red-600 shadow-lg shadow-red-500/30'
@@ -222,7 +222,8 @@ export default function GameOverScreen({ type }: GameOverScreenProps) {
             <span className="relative z-10">
               {isVictory ? '🎮 再来一局' : '💪 再试一次'}
             </span>
-            <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500" />
+            {/* 修复: 添加pointer-events-none */}
+            <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500 pointer-events-none" />
           </button>
 
           <button
