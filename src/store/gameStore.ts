@@ -350,6 +350,7 @@ export const useGameStore = create<GameState & GameActions & CosmeticsState & Da
   saveGame: () => {
     const state = get();
     const { battleStore } = getStores();
+    const { playerStore, enemyStore } = getStores();
     
     savePermanentData({
       elementEssence: battleStore.elementEssence,
@@ -359,20 +360,23 @@ export const useGameStore = create<GameState & GameActions & CosmeticsState & Da
       tutorialCompleted: state.tutorial.tutorialCompleted,
     });
 
-    if (battleStore.phase === 'battle' && useEnemyStore.getState().enemy) {
+    if (battleStore.phase === 'battle') {
       saveBattleData({
         phase: battleStore.phase,
         mode: battleStore.mode,
         difficulty: battleStore.difficulty,
         turn: battleStore.turn,
-        player: usePlayerStore.getState().player,
-        enemy: useEnemyStore.getState().enemy,
+        player: playerStore.player,
+        player2: playerStore.player2,
+        currentDuoPlayer: playerStore.currentDuoPlayer,
+        enemy: enemyStore.enemy,
         wave: battleStore.wave,
         level: battleStore.level,
         maxLevel: battleStore.maxLevel,
         score: battleStore.score,
         streak: battleStore.streak,
         comboHistory: battleStore.comboHistory,
+        comboCooldowns: playerStore.player.comboCooldowns,
       });
     }
   },
@@ -390,6 +394,12 @@ export const useGameStore = create<GameState & GameActions & CosmeticsState & Da
       ...battleData.player,
       comboLevels,
     });
+    if (battleData.player2) {
+      playerStore.setPlayer2(battleData.player2);
+    }
+    if (battleData.currentDuoPlayer) {
+      playerStore.setCurrentDuoPlayer(battleData.currentDuoPlayer);
+    }
     enemyStore.setEnemy(battleData.enemy);
 
     useBattleStore.setState({
@@ -404,6 +414,10 @@ export const useGameStore = create<GameState & GameActions & CosmeticsState & Da
       streak: battleData.streak,
       comboHistory: battleData.comboHistory,
     });
+
+    if (battleData.comboCooldowns) {
+      playerStore.setComboCooldowns(battleData.comboCooldowns);
+    }
 
     useUIStore.setState({
       isAnimating: false,

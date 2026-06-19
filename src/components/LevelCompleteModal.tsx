@@ -62,8 +62,8 @@ export default function LevelCompleteModal() {
   if (!showLevelComplete) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center animate-fade-in">
-      <div className="absolute inset-0 bg-black/70 backdrop-blur-md" />
+    <div className="fixed inset-0 z-50 flex items-center justify-center">
+      <div className="absolute inset-0 bg-black/70 backdrop-blur-md animate-fade-in" />
 
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div 
@@ -223,7 +223,7 @@ export default function LevelCompleteModal() {
                   </span>
                 )}
               </span>
-              <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500" />
+              <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500 pointer-events-none" />
             </button>
 
             <button

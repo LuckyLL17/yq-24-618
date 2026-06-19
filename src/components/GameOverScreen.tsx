@@ -31,10 +31,10 @@ export default function GameOverScreen({ type }: GameOverScreenProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center animate-fade-in">
+    <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* 暗化背景 - 立即显示，避免白屏 */}
-      <div className="absolute inset-0 bg-slate-950" />
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-md" />
+      <div className="absolute inset-0 bg-slate-950 animate-fade-in" />
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-md animate-fade-in pointer-events-none" />
 
       {/* 魔法阵背景 */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -95,7 +95,7 @@ export default function GameOverScreen({ type }: GameOverScreenProps) {
         {/* 外发光 */}
         <div
           className={cn(
-            'absolute -inset-16 blur-3xl opacity-50 rounded-full',
+            'absolute -inset-16 blur-3xl opacity-50 rounded-full pointer-events-none',
             isVictory
               ? 'bg-gradient-to-br from-amber-400 via-yellow-500 to-orange-500'
               : 'bg-gradient-to-br from-red-500 via-rose-600 to-red-700'
@@ -222,7 +222,7 @@ export default function GameOverScreen({ type }: GameOverScreenProps) {
             <span className="relative z-10">
               {isVictory ? '🎮 再来一局' : '💪 再试一次'}
             </span>
-            <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500" />
+            <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500 pointer-events-none" />
           </button>
 
           <button
