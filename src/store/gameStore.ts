@@ -359,7 +359,7 @@ export const useGameStore = create<GameState & GameActions & CosmeticsState & Da
       tutorialCompleted: state.tutorial.tutorialCompleted,
     });
 
-    // 修复: 保存双人模式状态 (player2, currentDuoPlayer, comboCooldowns)
+    // 修复: 保存双人模式状态 (player2, currentDuoPlayer, comboCooldowns, player2ComboCooldowns)
     if (battleStore.phase === 'battle' && (useEnemyStore.getState().enemy || battleStore.mode === 'duo')) {
       const playerState = usePlayerStore.getState();
       saveBattleData({
@@ -378,6 +378,8 @@ export const useGameStore = create<GameState & GameActions & CosmeticsState & Da
         streak: battleStore.streak,
         comboHistory: battleStore.comboHistory,
         comboCooldowns: playerState.player.comboCooldowns,
+        // 修复: 保存player2的comboCooldowns
+        player2ComboCooldowns: playerState.player2?.comboCooldowns || {},
       });
     }
   },
@@ -398,7 +400,12 @@ export const useGameStore = create<GameState & GameActions & CosmeticsState & Da
     
     // 修复: 恢复双人模式状态
     if (battleData.player2) {
-      playerStore.setPlayer2(battleData.player2);
+      const restoredPlayer2 = {
+        ...battleData.player2,
+        comboLevels,
+        comboCooldowns: battleData.player2ComboCooldowns || battleData.player2.comboCooldowns || [],
+      };
+      playerStore.setPlayer2(restoredPlayer2);
     } else {
       playerStore.setPlayer2(null);
     }
@@ -1996,6 +2003,8 @@ export const useGameStore = create<GameState & GameActions & CosmeticsState & Da
       streak: battleStore.streak,
       comboHistory: battleStore.comboHistory,
       comboCooldowns: playerStore.player.comboCooldowns,
+      // 修复: 保存player2的comboCooldowns
+      player2ComboCooldowns: playerStore.player2?.comboCooldowns || [],
     };
     
     const permanentData = {
@@ -2021,12 +2030,25 @@ export const useGameStore = create<GameState & GameActions & CosmeticsState & Da
     const slot = libGetSaveSlot(accountId, slotId);
     if (!slot || !slot.battleData) return false;
 
+    const permanentData = slot.permanentData;
+    const comboLevels = permanentData?.comboLevels || [];
     const { battleStore, playerStore, enemyStore, uiStore } = getStores();
     const data = slot.battleData;
 
-    playerStore.setPlayer(data.player);
+    playerStore.setPlayer({
+      ...data.player,
+      comboLevels,
+    });
     if (data.player2) {
-      playerStore.setPlayer2(data.player2);
+      // 修复: 恢复player2时应用comboLevels和player2ComboCooldowns
+      const restoredPlayer2 = {
+        ...data.player2,
+        comboLevels,
+        comboCooldowns: data.player2ComboCooldowns || data.player2.comboCooldowns || [],
+      };
+      playerStore.setPlayer2(restoredPlayer2);
+    } else {
+      playerStore.setPlayer2(null);
     }
     if (data.currentDuoPlayer) {
       playerStore.setCurrentDuoPlayer(data.currentDuoPlayer);

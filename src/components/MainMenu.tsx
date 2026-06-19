@@ -347,10 +347,11 @@ export default function MainMenu() {
               <div className="w-full max-w-2xl mb-4">
                 <button
                   onClick={toggleAccountManager}
-                  className="group w-full overflow-hidden rounded-2xl p-4 text-left transition-all duration-300 hover:scale-[1.01] active:scale-[0.99]"
+                  className="group relative w-full overflow-hidden rounded-2xl p-4 text-left transition-all duration-300 hover:scale-[1.01] active:scale-[0.99]"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-slate-800/80 via-slate-700/80 to-slate-800/80 opacity-90 group-hover:opacity-100 transition-opacity duration-300" />
-                  <div className="absolute inset-0 rounded-2xl border border-white/20 group-hover:border-amber-500/40 transition-colors duration-300" />
+                  {/* 修复: 添加pointer-events-none */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-slate-800/80 via-slate-700/80 to-slate-800/80 opacity-90 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                  <div className="absolute inset-0 rounded-2xl border border-white/20 group-hover:border-amber-500/40 transition-colors duration-300 pointer-events-none" />
                   <div className="relative z-10 flex items-center gap-4">
                     <div className="text-4xl">{currentAccount.avatar}</div>
                     <div className="flex-1">
