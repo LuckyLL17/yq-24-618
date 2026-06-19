@@ -31,9 +31,9 @@ export default function GameOverScreen({ type }: GameOverScreenProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center animate-fade-in">
+    <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* 暗化背景 - 立即显示，避免白屏 */}
-      <div className="absolute inset-0 bg-slate-950" />
+      <div className="absolute inset-0 bg-slate-950 animate-fade-in" />
       <div className="absolute inset-0 bg-black/60 backdrop-blur-md" />
 
       {/* 魔法阵背景 */}
@@ -90,8 +90,14 @@ export default function GameOverScreen({ type }: GameOverScreenProps) {
         </div>
       )}
 
-      {/* 主内容 */}
-      <div className="relative z-10 text-center animate-zoom-in">
+      {/* 主内容 - 修复: 使用modalPopIn动画确保从中心弹出，无位置偏移 */}
+      <div 
+        className="relative z-10 text-center"
+        style={{
+          animation: 'modalPopIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards',
+          transformOrigin: 'center center',
+        }}
+      >
         {/* 外发光 */}
         <div
           className={cn(

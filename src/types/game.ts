@@ -429,6 +429,8 @@ export interface GameSaveSlot {
     streak: number;
     comboHistory: GameState['comboHistory'];
     comboCooldowns: Player['comboCooldowns'];
+    // 修复: 添加player2的comboCooldowns字段
+    player2ComboCooldowns: Player['comboCooldowns'];
   } | null;
   savedAt: number;
 }

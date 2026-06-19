@@ -132,6 +132,22 @@ body {
   100% { transform: scale(1); opacity: 1; }
 }
 
+/* 修复: 新的弹框弹出动画 - 确保从中心缩放，无位置偏移 */
+@keyframes modalPopIn {
+  0% { 
+    transform: scale(0.5); 
+    opacity: 0; 
+  }
+  60% { 
+    transform: scale(1.05); 
+    opacity: 1; 
+  }
+  100% { 
+    transform: scale(1); 
+    opacity: 1; 
+  }
+}
+
 @keyframes rain {
   0% { transform: translateY(-20px); opacity: 0; }
   10% { opacity: 1; }

@@ -394,8 +394,16 @@ export default function DuoBattleScene() {
       )}
 
       {duoWinner && phase === 'victory' && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
-          <div className="text-center animate-rise">
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm animate-fade-in" />
+          {/* 修复: 使用modalPopIn动画替代animate-rise，确保从中心弹出 */}
+          <div 
+            className="relative z-10 text-center"
+            style={{
+              animation: 'modalPopIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards',
+              transformOrigin: 'center center',
+            }}
+          >
             <div className="text-6xl mb-4">🏆</div>
             <h2 className="text-5xl font-black text-gradient-gold mb-4" style={{ fontFamily: "'Cinzel Decorative', serif" }}>
               玩家 {duoWinner} 获胜!
