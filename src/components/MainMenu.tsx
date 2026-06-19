@@ -228,20 +228,20 @@ export default function MainMenu() {
                 <button
                   key={diff.id}
                   onClick={() => handleDifficultySelect(diff.id)}
-                  className="group relative overflow-hidden rounded-2xl p-5 text-left transition-all duration-300 hover:scale-105 active:scale-95"
+                  className="group relative isolate overflow-hidden rounded-2xl p-5 text-left transition-all duration-300 hover:scale-105 active:scale-95 transform-gpu"
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
-                  {/* 背景渐变 */}
-                  <div className={`absolute inset-0 bg-gradient-to-br ${diff.color} opacity-80 group-hover:opacity-100 transition-opacity duration-300`} />
+                  {/* 背景渐变 - 修复: 添加pointer-events-none防止拦截鼠标事件 */}
+                  <div className={`absolute inset-0 bg-gradient-to-br ${diff.color} opacity-80 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none`} />
                   
-                  {/* 光泽效果 */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent opacity-60" />
+                  {/* 光泽效果 - 修复: 添加pointer-events-none */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent opacity-60 pointer-events-none" />
                   
-                  {/* 外发光 */}
-                  <div className={`absolute -inset-1 rounded-2xl bg-gradient-to-br ${diff.color} blur-lg opacity-0 group-hover:opacity-60 transition-opacity duration-300`} />
+                  {/* 外发光 - 修复: 添加pointer-events-none, 使用z-[-1]确保在按钮下方不阻挡事件 */}
+                  <div className={`absolute -inset-1 rounded-2xl bg-gradient-to-br ${diff.color} blur-lg opacity-0 group-hover:opacity-60 transition-opacity duration-300 pointer-events-none -z-10`} />
 
-                  {/* 边框 */}
-                  <div className="absolute inset-0 rounded-2xl border-2 border-white/30" />
+                  {/* 边框 - 修复: 添加pointer-events-none */}
+                  <div className="absolute inset-0 rounded-2xl border-2 border-white/30 pointer-events-none" />
 
                   {/* 内容 */}
                   <div className="relative z-10">
@@ -268,19 +268,19 @@ export default function MainMenu() {
               <div className="w-full max-w-2xl mb-4 animate-rise">
                 <button
                   onClick={handleContinue}
-                  className="group relative w-full overflow-hidden rounded-2xl p-4 text-left transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+                  className="group relative isolate w-full overflow-hidden rounded-2xl p-4 text-left transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] transform-gpu"
                 >
-                  {/* 背景渐变 */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 opacity-90 group-hover:opacity-100 transition-opacity duration-300" />
+                  {/* 背景渐变 - 修复: 添加pointer-events-none */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 opacity-90 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
                   
-                  {/* 光泽效果 */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent opacity-60" />
+                  {/* 光泽效果 - 修复: 添加pointer-events-none */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent opacity-60 pointer-events-none" />
                   
-                  {/* 外发光 */}
-                  <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 blur-lg opacity-0 group-hover:opacity-60 transition-opacity duration-300" />
+                  {/* 外发光 - 修复: 添加pointer-events-none和-z-10 */}
+                  <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 blur-lg opacity-0 group-hover:opacity-60 transition-opacity duration-300 pointer-events-none -z-10" />
 
-                  {/* 边框 */}
-                  <div className="absolute inset-0 rounded-2xl border-2 border-white/40" />
+                  {/* 边框 - 修复: 添加pointer-events-none */}
+                  <div className="absolute inset-0 rounded-2xl border-2 border-white/40 pointer-events-none" />
 
                   {/* 内容 */}
                   <div className="relative z-10 flex items-center gap-4">
@@ -312,20 +312,20 @@ export default function MainMenu() {
                 <button
                   key={mode.id}
                   onClick={() => handleModeSelect(mode.id as GameMode)}
-                  className="group relative overflow-hidden rounded-2xl p-5 text-left transition-all duration-300 hover:scale-105 active:scale-95"
+                  className="group relative isolate overflow-hidden rounded-2xl p-5 text-left transition-all duration-300 hover:scale-105 active:scale-95 transform-gpu"
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
-                  {/* 背景渐变 */}
-                  <div className={`absolute inset-0 bg-gradient-to-br ${mode.color} opacity-80 group-hover:opacity-100 transition-opacity duration-300`} />
+                  {/* 背景渐变 - 修复: 添加pointer-events-none */}
+                  <div className={`absolute inset-0 bg-gradient-to-br ${mode.color} opacity-80 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none`} />
                   
-                  {/* 光泽效果 */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent opacity-60" />
+                  {/* 光泽效果 - 修复: 添加pointer-events-none */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent opacity-60 pointer-events-none" />
                   
-                  {/* 外发光 */}
-                  <div className={`absolute -inset-1 rounded-2xl bg-gradient-to-br ${mode.color} blur-lg opacity-0 group-hover:opacity-60 transition-opacity duration-300`} />
+                  {/* 外发光 - 修复: 添加pointer-events-none和-z-10 */}
+                  <div className={`absolute -inset-1 rounded-2xl bg-gradient-to-br ${mode.color} blur-lg opacity-0 group-hover:opacity-60 transition-opacity duration-300 pointer-events-none -z-10`} />
 
-                  {/* 边框 */}
-                  <div className="absolute inset-0 rounded-2xl border-2 border-white/30" />
+                  {/* 边框 - 修复: 添加pointer-events-none */}
+                  <div className="absolute inset-0 rounded-2xl border-2 border-white/30 pointer-events-none" />
 
                   {/* 内容 */}
                   <div className="relative z-10">
@@ -347,10 +347,12 @@ export default function MainMenu() {
               <div className="w-full max-w-2xl mb-4">
                 <button
                   onClick={toggleAccountManager}
-                  className="group w-full overflow-hidden rounded-2xl p-4 text-left transition-all duration-300 hover:scale-[1.01] active:scale-[0.99]"
+                  className="group relative isolate w-full overflow-hidden rounded-2xl p-4 text-left transition-all duration-300 hover:scale-[1.01] active:scale-[0.99] transform-gpu"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-slate-800/80 via-slate-700/80 to-slate-800/80 opacity-90 group-hover:opacity-100 transition-opacity duration-300" />
-                  <div className="absolute inset-0 rounded-2xl border border-white/20 group-hover:border-amber-500/40 transition-colors duration-300" />
+                  {/* 修复: 添加pointer-events-none */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-slate-800/80 via-slate-700/80 to-slate-800/80 opacity-90 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                  {/* 修复: 添加pointer-events-none */}
+                  <div className="absolute inset-0 rounded-2xl border border-white/20 group-hover:border-amber-500/40 transition-colors duration-300 pointer-events-none" />
                   <div className="relative z-10 flex items-center gap-4">
                     <div className="text-4xl">{currentAccount.avatar}</div>
                     <div className="flex-1">

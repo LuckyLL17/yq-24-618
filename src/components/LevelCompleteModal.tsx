@@ -63,6 +63,7 @@ export default function LevelCompleteModal() {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center animate-fade-in">
+      {/* 修复: 弹框定位问题 - 暗色遮罩 - 先显示遮罩覆盖全屏 */}
       <div className="absolute inset-0 bg-black/70 backdrop-blur-md" />
 
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -94,6 +95,7 @@ export default function LevelCompleteModal() {
         </div>
       ))}
 
+      {/* 修复: 弹框内容 - 使用flex居中而非absolute定位，配合改进后的zoom-in动画(使用both填充模式从中心缩放) */}
       <div className="relative z-10 text-center animate-zoom-in max-w-md w-full mx-4">
         <div
           className="absolute -inset-8 blur-3xl opacity-40 rounded-full bg-gradient-to-br from-amber-400 via-yellow-500 to-orange-500"
@@ -212,7 +214,7 @@ export default function LevelCompleteModal() {
           <div className="flex flex-col gap-3">
             <button
               onClick={proceedToNextLevel}
-              className="group relative px-8 py-4 rounded-xl font-bold text-lg text-white transition-all duration-300 hover:scale-105 active:scale-95 overflow-hidden bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 shadow-lg shadow-amber-500/30"
+              className="group relative isolate px-8 py-4 rounded-xl font-bold text-lg text-white transition-all duration-300 hover:scale-105 active:scale-95 overflow-hidden bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 shadow-lg shadow-amber-500/30 transform-gpu"
               style={{ fontFamily: "'Cinzel Decorative', serif" }}
             >
               <span className="relative z-10 flex items-center justify-center gap-2">
@@ -223,7 +225,8 @@ export default function LevelCompleteModal() {
                   </span>
                 )}
               </span>
-              <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500" />
+              {/* 修复: 添加pointer-events-none */}
+              <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500 pointer-events-none" />
             </button>
 
             <button
