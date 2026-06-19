@@ -62,8 +62,9 @@ export default function LevelCompleteModal() {
   if (!showLevelComplete) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center animate-fade-in">
-      <div className="absolute inset-0 bg-black/70 backdrop-blur-md" />
+    <div className="fixed inset-0 z-50 flex items-center justify-center">
+      {/* 背景遮罩 - 修复: 使用淡入动画确保遮罩平滑显示 */}
+      <div className="absolute inset-0 bg-black/70 backdrop-blur-md animate-fade-in" />
 
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div 
@@ -94,7 +95,14 @@ export default function LevelCompleteModal() {
         </div>
       ))}
 
-      <div className="relative z-10 text-center animate-zoom-in max-w-md w-full mx-4">
+      {/* 内容区域 - 修复: 使用改进的弹框动画，确保从中心缩放，无位置偏移 */}
+      <div 
+        className="relative z-10 text-center max-w-md w-full mx-4"
+        style={{
+          animation: 'modalPopIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards',
+          transformOrigin: 'center center',
+        }}
+      >
         <div
           className="absolute -inset-8 blur-3xl opacity-40 rounded-full bg-gradient-to-br from-amber-400 via-yellow-500 to-orange-500"
           style={{ animation: 'pulse 2s ease-in-out infinite' }}

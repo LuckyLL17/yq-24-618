@@ -22,6 +22,9 @@ export interface BattleSaveData {
   difficulty: Difficulty;
   turn: number;
   player: Player;
+  // 修复: 添加双人模式保存字段
+  player2: Player | null;
+  currentDuoPlayer: 1 | 2;
   enemy: Enemy | null;
   wave: number;
   level: number;
@@ -29,6 +32,7 @@ export interface BattleSaveData {
   score: number;
   streak: number;
   comboHistory: GameState['comboHistory'];
+  comboCooldowns: Player['comboCooldowns'];
   savedAt: number;
 }
 

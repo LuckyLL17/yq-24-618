@@ -235,13 +235,13 @@ export default function MainMenu() {
                   <div className={`absolute inset-0 bg-gradient-to-br ${diff.color} opacity-80 group-hover:opacity-100 transition-opacity duration-300`} />
                   
                   {/* 光泽效果 */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent opacity-60" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent opacity-60 pointer-events-none" />
                   
-                  {/* 外发光 */}
-                  <div className={`absolute -inset-1 rounded-2xl bg-gradient-to-br ${diff.color} blur-lg opacity-0 group-hover:opacity-60 transition-opacity duration-300`} />
+                  {/* 外发光 - 修复: 添加pointer-events-none防止阻挡点击和闪烁 */}
+                  <div className={`absolute -inset-1 rounded-2xl bg-gradient-to-br ${diff.color} blur-lg opacity-0 group-hover:opacity-60 transition-opacity duration-300 pointer-events-none`} />
 
                   {/* 边框 */}
-                  <div className="absolute inset-0 rounded-2xl border-2 border-white/30" />
+                  <div className="absolute inset-0 rounded-2xl border-2 border-white/30 pointer-events-none" />
 
                   {/* 内容 */}
                   <div className="relative z-10">
@@ -274,13 +274,13 @@ export default function MainMenu() {
                   <div className="absolute inset-0 bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 opacity-90 group-hover:opacity-100 transition-opacity duration-300" />
                   
                   {/* 光泽效果 */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent opacity-60" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent opacity-60 pointer-events-none" />
                   
-                  {/* 外发光 */}
-                  <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 blur-lg opacity-0 group-hover:opacity-60 transition-opacity duration-300" />
+                  {/* 外发光 - 修复: 添加pointer-events-none */}
+                  <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 blur-lg opacity-0 group-hover:opacity-60 transition-opacity duration-300 pointer-events-none" />
 
                   {/* 边框 */}
-                  <div className="absolute inset-0 rounded-2xl border-2 border-white/40" />
+                  <div className="absolute inset-0 rounded-2xl border-2 border-white/40 pointer-events-none" />
 
                   {/* 内容 */}
                   <div className="relative z-10 flex items-center gap-4">
@@ -319,13 +319,13 @@ export default function MainMenu() {
                   <div className={`absolute inset-0 bg-gradient-to-br ${mode.color} opacity-80 group-hover:opacity-100 transition-opacity duration-300`} />
                   
                   {/* 光泽效果 */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent opacity-60" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent opacity-60 pointer-events-none" />
                   
-                  {/* 外发光 */}
-                  <div className={`absolute -inset-1 rounded-2xl bg-gradient-to-br ${mode.color} blur-lg opacity-0 group-hover:opacity-60 transition-opacity duration-300`} />
+                  {/* 外发光 - 修复: 添加pointer-events-none防止闪烁和点击阻挡 */}
+                  <div className={`absolute -inset-1 rounded-2xl bg-gradient-to-br ${mode.color} blur-lg opacity-0 group-hover:opacity-60 transition-opacity duration-300 pointer-events-none`} />
 
                   {/* 边框 */}
-                  <div className="absolute inset-0 rounded-2xl border-2 border-white/30" />
+                  <div className="absolute inset-0 rounded-2xl border-2 border-white/30 pointer-events-none" />
 
                   {/* 内容 */}
                   <div className="relative z-10">

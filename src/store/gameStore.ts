@@ -359,13 +359,17 @@ export const useGameStore = create<GameState & GameActions & CosmeticsState & Da
       tutorialCompleted: state.tutorial.tutorialCompleted,
     });
 
-    if (battleStore.phase === 'battle' && useEnemyStore.getState().enemy) {
+    // 修复: 保存双人模式状态 (player2, currentDuoPlayer, comboCooldowns)
+    if (battleStore.phase === 'battle' && (useEnemyStore.getState().enemy || battleStore.mode === 'duo')) {
+      const playerState = usePlayerStore.getState();
       saveBattleData({
         phase: battleStore.phase,
         mode: battleStore.mode,
         difficulty: battleStore.difficulty,
         turn: battleStore.turn,
-        player: usePlayerStore.getState().player,
+        player: playerState.player,
+        player2: playerState.player2,
+        currentDuoPlayer: playerState.currentDuoPlayer,
         enemy: useEnemyStore.getState().enemy,
         wave: battleStore.wave,
         level: battleStore.level,
@@ -373,6 +377,7 @@ export const useGameStore = create<GameState & GameActions & CosmeticsState & Da
         score: battleStore.score,
         streak: battleStore.streak,
         comboHistory: battleStore.comboHistory,
+        comboCooldowns: playerState.player.comboCooldowns,
       });
     }
   },
@@ -390,6 +395,20 @@ export const useGameStore = create<GameState & GameActions & CosmeticsState & Da
       ...battleData.player,
       comboLevels,
     });
+    
+    // 修复: 恢复双人模式状态
+    if (battleData.player2) {
+      playerStore.setPlayer2(battleData.player2);
+    } else {
+      playerStore.setPlayer2(null);
+    }
+    if (battleData.currentDuoPlayer) {
+      playerStore.setCurrentDuoPlayer(battleData.currentDuoPlayer);
+    }
+    if (battleData.comboCooldowns) {
+      playerStore.setComboCooldowns(battleData.comboCooldowns);
+    }
+    
     enemyStore.setEnemy(battleData.enemy);
 
     useBattleStore.setState({
