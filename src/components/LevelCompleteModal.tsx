@@ -78,10 +78,11 @@ export default function LevelCompleteModal() {
         </div>
       </div>
 
+      {/* 修复: 飘落的装饰星星添加 pointer-events-none，避免遮挡按钮点击 */}
       {[...Array(20)].map((_, i) => (
         <div
           key={i}
-          className="absolute text-2xl animate-fall opacity-0"
+          className="absolute text-2xl animate-fall opacity-0 pointer-events-none select-none"
           style={{
             left: `${Math.random() * 100}%`,
             top: '-50px',

@@ -138,11 +138,12 @@ export default function MainMenu() {
         ))}
       </div>
 
-      {/* 装饰性大元素 */}
-      <div className="absolute top-16 left-16 text-7xl animate-float-slow opacity-20">🔥</div>
-      <div className="absolute top-32 right-24 text-6xl animate-float-slow opacity-20" style={{ animationDelay: '1s' }}>💧</div>
-      <div className="absolute bottom-40 left-24 text-8xl animate-float-slow opacity-20" style={{ animationDelay: '0.5s' }}>🌍</div>
-      <div className="absolute bottom-24 right-16 text-7xl animate-float-slow opacity-20" style={{ animationDelay: '1.5s' }}>🌪️</div>
+      {/* 装饰性大元素 - 修复: 添加 pointer-events-none，避免装饰元素拦截鼠标事件
+          导致模式按钮 hover 状态闪烁、按钮无法点击的问题 */}
+      <div className="absolute top-16 left-16 text-7xl animate-float-slow opacity-20 pointer-events-none select-none">🔥</div>
+      <div className="absolute top-32 right-24 text-6xl animate-float-slow opacity-20 pointer-events-none select-none" style={{ animationDelay: '1s' }}>💧</div>
+      <div className="absolute bottom-40 left-24 text-8xl animate-float-slow opacity-20 pointer-events-none select-none" style={{ animationDelay: '0.5s' }}>🌍</div>
+      <div className="absolute bottom-24 right-16 text-7xl animate-float-slow opacity-20 pointer-events-none select-none" style={{ animationDelay: '1.5s' }}>🌪️</div>
 
       {/* 魔法阵背景 */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">

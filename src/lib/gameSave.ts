@@ -22,6 +22,10 @@ export interface BattleSaveData {
   difficulty: Difficulty;
   turn: number;
   player: Player;
+  // 修复: 双人模式下需要同时保存 player2 与当前回合玩家，
+  // 否则 saveBattleData 仅保存单玩家状态，双人对战进度会丢失。
+  player2: Player | null;
+  currentDuoPlayer: 1 | 2;
   enemy: Enemy | null;
   wave: number;
   level: number;
@@ -354,8 +358,9 @@ export const migrateLegacySavesToAccount = (accountId: string): void => {
           difficulty: battleData.difficulty,
           turn: battleData.turn,
           player: battleData.player,
-          player2: (battleData as any).player2 || null,
-          currentDuoPlayer: (battleData as any).currentDuoPlayer || 1,
+          // 修复: BattleSaveData 现已包含 player2 / currentDuoPlayer，无需再用 any 兜底
+          player2: battleData.player2 ?? null,
+          currentDuoPlayer: battleData.currentDuoPlayer ?? 1,
           enemy: battleData.enemy,
           wave: battleData.wave,
           level: battleData.level,
@@ -363,7 +368,7 @@ export const migrateLegacySavesToAccount = (accountId: string): void => {
           score: battleData.score,
           streak: battleData.streak,
           comboHistory: battleData.comboHistory,
-          comboCooldowns: (battleData as any).comboCooldowns || [],
+          comboCooldowns: (battleData as unknown as { comboCooldowns?: Player['comboCooldowns'] }).comboCooldowns || [],
         } : null,
         slotName: '自动迁移存档',
       });
