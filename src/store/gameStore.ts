@@ -360,12 +360,17 @@ export const useGameStore = create<GameState & GameActions & CosmeticsState & Da
     });
 
     if (battleStore.phase === 'battle' && useEnemyStore.getState().enemy) {
+      // 修复: saveBattleData 之前只保存了 player（单玩家）状态，
+      // 双人对战(duo)时 player2 / currentDuoPlayer 会丢失，导致存档无法还原对局。
+      const playerState = usePlayerStore.getState();
       saveBattleData({
         phase: battleStore.phase,
         mode: battleStore.mode,
         difficulty: battleStore.difficulty,
         turn: battleStore.turn,
-        player: usePlayerStore.getState().player,
+        player: playerState.player,
+        player2: playerState.player2 ?? null,
+        currentDuoPlayer: playerState.currentDuoPlayer ?? 1,
         enemy: useEnemyStore.getState().enemy,
         wave: battleStore.wave,
         level: battleStore.level,
@@ -390,6 +395,17 @@ export const useGameStore = create<GameState & GameActions & CosmeticsState & Da
       ...battleData.player,
       comboLevels,
     });
+    // 修复: 双人模式存档需要同时还原 player2 与当前回合玩家，
+    // 否则 saveBattleData 保存的双人状态在 continueGame 时无法恢复。
+    if (battleData.player2) {
+      playerStore.setPlayer2({
+        ...battleData.player2,
+        comboLevels,
+      });
+    } else {
+      playerStore.setPlayer2(null);
+    }
+    playerStore.setCurrentDuoPlayer(battleData.currentDuoPlayer ?? 1);
     enemyStore.setEnemy(battleData.enemy);
 
     useBattleStore.setState({

@@ -138,11 +138,12 @@ export default function MainMenu() {
         ))}
       </div>
 
-      {/* 装饰性大元素 */}
-      <div className="absolute top-16 left-16 text-7xl animate-float-slow opacity-20">🔥</div>
-      <div className="absolute top-32 right-24 text-6xl animate-float-slow opacity-20" style={{ animationDelay: '1s' }}>💧</div>
-      <div className="absolute bottom-40 left-24 text-8xl animate-float-slow opacity-20" style={{ animationDelay: '0.5s' }}>🌍</div>
-      <div className="absolute bottom-24 right-16 text-7xl animate-float-slow opacity-20" style={{ animationDelay: '1.5s' }}>🌪️</div>
+      {/* 装饰性大元素 - 修复: 添加 pointer-events-none，避免装饰元素拦截鼠标事件
+          导致模式按钮 hover 状态闪烁、按钮无法点击的问题 */}
+      <div className="absolute top-16 left-16 text-7xl animate-float-slow opacity-20 pointer-events-none select-none">🔥</div>
+      <div className="absolute top-32 right-24 text-6xl animate-float-slow opacity-20 pointer-events-none select-none" style={{ animationDelay: '1s' }}>💧</div>
+      <div className="absolute bottom-40 left-24 text-8xl animate-float-slow opacity-20 pointer-events-none select-none" style={{ animationDelay: '0.5s' }}>🌍</div>
+      <div className="absolute bottom-24 right-16 text-7xl animate-float-slow opacity-20 pointer-events-none select-none" style={{ animationDelay: '1.5s' }}>🌪️</div>
 
       {/* 魔法阵背景 */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
@@ -227,36 +228,40 @@ export default function MainMenu() {
               {difficulties.map((diff, index) => (
                 <button
                   key={diff.id}
+                  type="button"
                   onClick={() => handleDifficultySelect(diff.id)}
-                  className="group relative overflow-hidden rounded-2xl p-5 text-left transition-all duration-300 hover:scale-105 active:scale-95"
+                  className="group relative rounded-2xl text-left bg-transparent border-0 p-0 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400/60"
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
-                  {/* 背景渐变 */}
-                  <div className={`absolute inset-0 bg-gradient-to-br ${diff.color} opacity-80 group-hover:opacity-100 transition-opacity duration-300`} />
-                  
-                  {/* 光泽效果 */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent opacity-60" />
-                  
-                  {/* 外发光 */}
-                  <div className={`absolute -inset-1 rounded-2xl bg-gradient-to-br ${diff.color} blur-lg opacity-0 group-hover:opacity-60 transition-opacity duration-300`} />
+                  {/* 修复: 缩放放在内部 wrapper 上，button 命中区不变；装饰层全部 pointer-events-none */}
+                  <div className="relative overflow-hidden rounded-2xl p-5 transition-transform duration-300 ease-out group-hover:scale-[1.03] group-active:scale-[0.97]">
+                    {/* 背景渐变 */}
+                    <div className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${diff.color} opacity-80 group-hover:opacity-100 transition-opacity duration-300`} />
+                    
+                    {/* 光泽效果 */}
+                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent opacity-60" />
 
-                  {/* 边框 */}
-                  <div className="absolute inset-0 rounded-2xl border-2 border-white/30" />
+                    {/* 边框 */}
+                    <div className="pointer-events-none absolute inset-0 rounded-2xl border-2 border-white/30" />
 
-                  {/* 内容 */}
-                  <div className="relative z-10">
-                    <div className="text-4xl mb-2">{diff.icon}</div>
-                    <h3 className="text-xl font-bold text-white mb-1" style={{ fontFamily: "'Cinzel Decorative', serif" }}>
-                      {diff.name}
-                    </h3>
-                    <p className="text-white/70 text-sm mb-3">{diff.description}</p>
-                    <div className="text-xs text-white/60 space-y-1">
-                      <div>敌人生命: ×{diff.enemyHpMultiplier}</div>
-                      <div>敌人攻击: ×{diff.enemyAttackMultiplier}</div>
-                      <div>玩家生命: ×{diff.playerHpMultiplier}</div>
-                      <div>精华获取: ×{diff.essenceMultiplier}</div>
+                    {/* 内容 */}
+                    <div className="pointer-events-none relative z-10">
+                      <div className="text-4xl mb-2">{diff.icon}</div>
+                      <h3 className="text-xl font-bold text-white mb-1" style={{ fontFamily: "'Cinzel Decorative', serif" }}>
+                        {diff.name}
+                      </h3>
+                      <p className="text-white/70 text-sm mb-3">{diff.description}</p>
+                      <div className="text-xs text-white/60 space-y-1">
+                        <div>敌人生命: ×{diff.enemyHpMultiplier}</div>
+                        <div>敌人攻击: ×{diff.enemyAttackMultiplier}</div>
+                        <div>玩家生命: ×{diff.playerHpMultiplier}</div>
+                        <div>精华获取: ×{diff.essenceMultiplier}</div>
+                      </div>
                     </div>
                   </div>
+
+                  {/* 修复: 外发光独立放到缩放 wrapper 之外，避免命中区抖动 */}
+                  <div className={`pointer-events-none absolute -inset-1 -z-10 rounded-2xl bg-gradient-to-br ${diff.color} blur-lg opacity-0 group-hover:opacity-60 transition-opacity duration-300`} />
                 </button>
               ))}
             </div>
@@ -267,41 +272,45 @@ export default function MainMenu() {
             {saveInfo && (
               <div className="w-full max-w-2xl mb-4 animate-rise">
                 <button
+                  type="button"
                   onClick={handleContinue}
-                  className="group relative w-full overflow-hidden rounded-2xl p-4 text-left transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+                  className="group relative w-full rounded-2xl text-left bg-transparent border-0 p-0 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400/60"
                 >
-                  {/* 背景渐变 */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 opacity-90 group-hover:opacity-100 transition-opacity duration-300" />
-                  
-                  {/* 光泽效果 */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent opacity-60" />
-                  
-                  {/* 外发光 */}
-                  <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 blur-lg opacity-0 group-hover:opacity-60 transition-opacity duration-300" />
+                  {/* 修复: 缩放放在内部 wrapper 上，button 命中区不变 */}
+                  <div className="relative overflow-hidden rounded-2xl p-4 transition-transform duration-300 ease-out group-hover:scale-[1.02] group-active:scale-[0.98]">
+                    {/* 背景渐变 */}
+                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 opacity-90 group-hover:opacity-100 transition-opacity duration-300" />
+                    
+                    {/* 光泽效果 */}
+                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent opacity-60" />
 
-                  {/* 边框 */}
-                  <div className="absolute inset-0 rounded-2xl border-2 border-white/40" />
+                    {/* 边框 */}
+                    <div className="pointer-events-none absolute inset-0 rounded-2xl border-2 border-white/40" />
 
-                  {/* 内容 */}
-                  <div className="relative z-10 flex items-center gap-4">
-                    <div className="text-4xl">💾</div>
-                    <div className="flex-1">
-                      <h3 className="text-xl font-bold text-white" style={{ fontFamily: "'Cinzel Decorative', serif" }}>
-                        继续游戏
-                      </h3>
-                      <p className="text-white/70 text-sm">
-                        {modeNames[saveInfo.mode]} · 第 {saveInfo.level} 关 · 第 {saveInfo.wave} 波
-                      </p>
-                    </div>
-                    <div className="text-white/60 text-sm">
-                      {new Date(saveInfo.savedAt).toLocaleString('zh-CN', {
-                        month: 'short',
-                        day: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                      })}
+                    {/* 内容 */}
+                    <div className="pointer-events-none relative z-10 flex items-center gap-4">
+                      <div className="text-4xl">💾</div>
+                      <div className="flex-1">
+                        <h3 className="text-xl font-bold text-white" style={{ fontFamily: "'Cinzel Decorative', serif" }}>
+                          继续游戏
+                        </h3>
+                        <p className="text-white/70 text-sm">
+                          {modeNames[saveInfo.mode]} · 第 {saveInfo.level} 关 · 第 {saveInfo.wave} 波
+                        </p>
+                      </div>
+                      <div className="text-white/60 text-sm">
+                        {new Date(saveInfo.savedAt).toLocaleString('zh-CN', {
+                          month: 'short',
+                          day: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit',
+                        })}
+                      </div>
                     </div>
                   </div>
+
+                  {/* 修复: 外发光独立放到缩放 wrapper 之外 */}
+                  <div className="pointer-events-none absolute -inset-1 -z-10 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 blur-lg opacity-0 group-hover:opacity-60 transition-opacity duration-300" />
                 </button>
               </div>
             )}
@@ -311,33 +320,41 @@ export default function MainMenu() {
               {gameModes.map((mode, index) => (
                 <button
                   key={mode.id}
+                  type="button"
                   onClick={() => handleModeSelect(mode.id as GameMode)}
-                  className="group relative overflow-hidden rounded-2xl p-5 text-left transition-all duration-300 hover:scale-105 active:scale-95"
+                  className="group relative rounded-2xl text-left bg-transparent border-0 p-0 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400/60"
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
-                  {/* 背景渐变 */}
-                  <div className={`absolute inset-0 bg-gradient-to-br ${mode.color} opacity-80 group-hover:opacity-100 transition-opacity duration-300`} />
-                  
-                  {/* 光泽效果 */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent opacity-60" />
-                  
-                  {/* 外发光 */}
-                  <div className={`absolute -inset-1 rounded-2xl bg-gradient-to-br ${mode.color} blur-lg opacity-0 group-hover:opacity-60 transition-opacity duration-300`} />
+                  {/* 修复: 缩放效果改放在内部 wrapper 上，button 自身不再 transform，
+                      避免 hover:scale-105 时按钮边界移动导致鼠标在 button 边缘"跌出/跌入"
+                      引发的 hover 状态反复切换（透明遮罩闪烁）。
+                      同时所有装饰层都加 pointer-events-none，确保只有 button 接收事件。 */}
+                  <div className="relative overflow-hidden rounded-2xl p-5 transition-transform duration-300 ease-out group-hover:scale-[1.03] group-active:scale-[0.97]">
+                    {/* 背景渐变 */}
+                    <div className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${mode.color} opacity-80 group-hover:opacity-100 transition-opacity duration-300`} />
 
-                  {/* 边框 */}
-                  <div className="absolute inset-0 rounded-2xl border-2 border-white/30" />
+                    {/* 光泽效果 */}
+                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent opacity-60" />
 
-                  {/* 内容 */}
-                  <div className="relative z-10">
-                    <div className="text-4xl mb-2">{mode.icon}</div>
-                    <h3 className="text-xl font-bold text-white mb-1" style={{ fontFamily: "'Cinzel Decorative', serif" }}>
-                      {mode.name}
-                    </h3>
-                    <p className="text-white/70 text-sm">{mode.description}</p>
-                    <div className="mt-2 text-xs text-white/60">
-                      关卡数: {mode.levels}
+                    {/* 边框 */}
+                    <div className="pointer-events-none absolute inset-0 rounded-2xl border-2 border-white/30" />
+
+                    {/* 内容 */}
+                    <div className="pointer-events-none relative z-10">
+                      <div className="text-4xl mb-2">{mode.icon}</div>
+                      <h3 className="text-xl font-bold text-white mb-1" style={{ fontFamily: "'Cinzel Decorative', serif" }}>
+                        {mode.name}
+                      </h3>
+                      <p className="text-white/70 text-sm">{mode.description}</p>
+                      <div className="mt-2 text-xs text-white/60">
+                        关卡数: {mode.levels}
+                      </div>
                     </div>
                   </div>
+
+                  {/* 修复: 外发光放到 button 自身、缩放 wrapper 之外，
+                      避免 -inset-1 与缩放叠加时改变命中区。pointer-events-none 防止事件拦截。 */}
+                  <div className={`pointer-events-none absolute -inset-1 -z-10 rounded-2xl bg-gradient-to-br ${mode.color} blur-lg opacity-0 group-hover:opacity-60 transition-opacity duration-300`} />
                 </button>
               ))}
             </div>
